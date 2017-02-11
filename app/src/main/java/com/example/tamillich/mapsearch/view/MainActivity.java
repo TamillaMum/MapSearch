@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
-        /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -196,6 +196,24 @@ public class MainActivity extends AppCompatActivity implements
             // for ActivityCompat#requestPermissions for more details.
             return;
         }*/
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Check Permissions Now
+           final int REQUEST_LOCATION = 2;
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Display UI and wait for user interaction
+            } else {
+                ActivityCompat.requestPermissions(
+                        this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},REQUEST_LOCATION);
+            }
+        } else {
+            // permission has been granted, continue as usual
+            Location myLocation =
+                    LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             mLatitudeText = String.valueOf(mLastLocation.getLatitude());
