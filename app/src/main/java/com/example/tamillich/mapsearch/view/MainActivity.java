@@ -27,9 +27,12 @@ import android.widget.Toast;
 import com.example.tamillich.mapsearch.R;
 import com.example.tamillich.mapsearch.controler.PlaceSearchIntentService;
 import com.example.tamillich.mapsearch.module.Const;
+import com.example.tamillich.mapsearch.module.JsonRequestResult;
+import com.example.tamillich.mapsearch.module.Places;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements
     protected String mLongitudeLabel;
     private String mLatitudeText, mLongitudeText;
     private EditText mSearchText;
+    private JsonRequestResult mResult;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements
 
                     Intent intent = new Intent(MainActivity.this, PlaceSearchIntentService.class);
                     intent.setAction(Const.ACTION_FIND_NEAR_BY_PLACE);
-                    String coordinates = mLatitudeText+","+mLongitudeText;
-                    Log.e("Coordinate" , coordinates);
-                    intent.putExtra(Const.EXTRA_CURRENT_COORDINATE,coordinates);
+                    String coordinates = mLatitudeText + "," + mLongitudeText;
+                    Log.e("Coordinate", coordinates);
+                    intent.putExtra(Const.EXTRA_CURRENT_COORDINATE, coordinates);
                     intent.putExtra(Const.EXTRA_SEARCH_QUERY, mSearchText.getText().toString());
                     startService(intent);
                 } else
@@ -172,9 +177,14 @@ public class MainActivity extends AppCompatActivity implements
                     break;
                 case Const.ACTION_FIND_NEAR_BY_PLACE:
                     String json = intent.getStringExtra(Const.RESULT_JSON);
-                    if (json != null)
+                    if (json != null) {
                         Toast.makeText(context, json, Toast.LENGTH_SHORT).show();
-                    else
+                       /* Gson gson = new Gson();
+                        mResult = gson.fromJson(json, JsonRequestResult.class);
+                        Log.e("Results",mResult.getResults().size()+"");
+                       *//* for (Places a : mResult.getResults())*/
+
+                    } else
                         Toast.makeText(context, "Error request", Toast.LENGTH_SHORT).show();
 
                     break;
@@ -200,14 +210,14 @@ public class MainActivity extends AppCompatActivity implements
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Check Permissions Now
-           final int REQUEST_LOCATION = 2;
+            final int REQUEST_LOCATION = 2;
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // Display UI and wait for user interaction
             } else {
                 ActivityCompat.requestPermissions(
-                        this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},REQUEST_LOCATION);
+                        this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
             }
         } else {
             // permission has been granted, continue as usual
@@ -219,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements
             mLatitudeText = String.valueOf(mLastLocation.getLatitude());
             mLongitudeText = String.valueOf(mLastLocation.getLongitude());
 
-            Toast.makeText(MainActivity.this,mLatitudeText+" "+mLongitudeText,Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, mLatitudeText + " " + mLongitudeText, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "No Connection", Toast.LENGTH_LONG).show();
         }

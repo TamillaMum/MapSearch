@@ -18,9 +18,9 @@
         android:text="find place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginBottom="83dp"
+        android:layout_marginLeft="49dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginBottom="20dp"
         android:id="@+id/button_byPlace"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -31,12 +31,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_byRadius"
-        android:layout_marginLeft="49dp"
-        android:layout_marginStart="49dp"
+        android:layout_marginLeft="54dp"
+        android:layout_marginStart="54dp"
         android:layout_alignBaseline="@+id/button_byPlace"
         android:layout_alignBottom="@+id/button_byPlace"
         android:layout_toRightOf="@+id/button_byPlace"
         android:layout_toEndOf="@+id/button_byPlace" />
+
 
     <EditText
         android:layout_width="wrap_content"
@@ -44,8 +45,7 @@
         android:inputType="textPersonName"
         android:hint="Enter Search Place"
         android:ems="10"
+        android:id="@+id/searchPlace"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
-        android:id="@+id/searchPlace" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
